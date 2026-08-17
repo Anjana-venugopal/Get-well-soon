@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Well Soon, Babe! ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;800&display=swap');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 50%, #fff0f3 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Animated Floating Canvas Elements */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Card Glow */
+        .card-glow {
+            box-shadow: 0 20px 40px -15px rgba(255, 117, 143, 0.25);
+        }
+
+        /* Bounce Animation */
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse-heart {
+            animation: gentlePulse 2s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar for modal */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffb3c1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 relative min-h-screen">
+
+    <!-- Floating Background Particles Container -->
+    <div id="particle-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- Main App Container -->
+    <main class="relative z-10 w-full max-w-md bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 card-glow border-2 border-pink-100 my-8 text-center transition-all">
+        
+        <!-- Top Cute Badge -->
+        <div class="inline-flex items-center gap-2 bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full text-sm font-bold mb-4 shadow-sm">
+            <i class="fa-solid fa-heart-pulse animate-pulse"></i>
+            <span>Special Recovery Package</span>
+        </div>
+
+        <!-- Dynamic Header -->
+        <h1 class="text-3xl sm:text-4xl font-bold text-rose-600 mb-1">
+            Get Well Soon, <span id="babe-name-display" class="text-pink-500 underline decoration-pink-300 decoration-wavy">Babe</span>! ❤️
+        </h1>
+        <p class="text-gray-500 text-sm mb-6">Sending you warmth, cozy blankets, and endless love!</p>
+
+        <!-- Animated Centerpiece -->
+        <div class="relative w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-rose-50 rounded-full border-4 border-rose-200 shadow-inner pulse-heart cursor-pointer" onclick="triggerConfetti()">
+            <span class="text-6xl select-none" id="main-emoji">🧸</span>
+            <div class="absolute -top-1 -right-1 bg-rose-500 text-white rounded-full p-2 text-xs shadow-md">
+                <i class="fa-solid fa-band-aid"></i>
+            </div>
+        </div>
+
+        <!-- Note Section -->
+        <div class="bg-rose-50/80 border border-rose-100 rounded-2xl p-4 mb-6 text-left">
+            <p class="text-gray-700 text-sm leading-relaxed" id="note-body">
+                I wish I could take away all the pain and fever! Until I can wrap you in my arms, please enjoy this interactive digital care package made just for you.
+            </p>
+        </div>
+
+        <!-- Interactive Care Buttons Grid -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <button onclick="openSoupModal()" class="flex flex-col items-center justify-center p-3 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-2xl transition-all hover:-translate-y-1 active:translate-y-0 group">
+                <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">🥣</span>
+                <span class="text-xs font-bold text-rose-700">Warm Soup</span>
+            </button>
+
+            <button onclick="openPrescriptionModal()" class="flex flex-col items-center justify-center p-3 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-2xl transition-all hover:-translate-y-1 active:translate-y-0 group">
+                <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">📋</span>
+                <span class="text-xs font-bold text-rose-700">Love Rx</span>
+            </button>
+
+            <button onclick="pickFlower()" class="flex flex-col items-center justify-center p-3 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-2xl transition-all hover:-translate-y-1 active:translate-y-0 group">
+                <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">🌸</span>
+                <span class="text-xs font-bold text-rose-700">Healing Bloom</span>
+            </button>
+
+            <button onclick="sendHug()" class="flex flex-col items-center justify-center p-3 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-2xl transition-all hover:-translate-y-1 active:translate-y-0 group">
+                <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">🤗</span>
+                <span class="text-xs font-bold text-rose-700">Giant Hug</span>
+            </button>
+        </div>
+
+        <!-- Hug Counter Box -->
+        <div class="bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl p-4 text-white shadow-md mb-6 flex items-center justify-between">
+            <div class="text-left">
+                <div class="text-xs font-bold uppercase tracking-wider opacity-90">Hugs Delivered</div>
+                <div class="text-2xl font-black font-heading" id="hug-counter">0 Hugs</div>
+            </div>
+            <button onclick="sendHug()" class="bg-white text-rose-600 font-bold px-4 py-2 rounded-xl text-xs hover:bg-rose-50 active:scale-95 transition-all shadow">
+                +1 Hug
+            </button>
+        </div>
+
+        <!-- Music Toggle & Personalization -->
+        <div class="flex items-center justify-between text-xs text-gray-500 border-t border-gray-100 pt-4">
+            <button onclick="toggleMusic()" id="music-btn" class="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full font-semibold transition-all">
+                <i class="fa-solid fa-music text-pink-500"></i>
+                <span id="music-text">Lullaby On</span>
+            </button>
+
+            <button onclick="customizeNames()" class="flex items-center gap-1 hover:text-rose-600 transition-colors">
+                <i class="fa-solid fa-pen"></i>
+                <span>Edit Names</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-4 text-xs text-gray-400 font-semibold" id="signature-display">
+            Made with infinite love by Your Favorite Person
+        </div>
+    </main>
+
+    <!-- Custom Modal / Popups -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-6 text-center shadow-2xl border-2 border-pink-100 transform transition-all scale-95" id="modal-box">
+            <div id="modal-emoji" class="text-5xl mb-3">🥣</div>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2">Title</h3>
+            <p id="modal-text" class="text-gray-600 text-sm mb-6 leading-relaxed">Message content goes here...</p>
+            <button onclick="closeModal()" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2.5 rounded-xl text-sm transition-colors shadow-md">
+                Close with Love 💕
+            </button>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // Default State
+        let babeName = "Babe";
+        let senderName = "Your Favorite Person";
+        let hugCount = 0;
+        let isAudioPlaying = false;
+
+        // Load Query Params if available (e.g. ?babe=Sweetheart&from=Alex)
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('babe')) babeName = params.get('babe');
+            if (params.get('from')) senderName = params.get('from');
+
+            updateDisplays();
+            createFloatingParticles();
+        });
+
+        function updateDisplays() {
+            document.getElementById('babe-name-display').innerText = babeName;
+            document.getElementById('signature-display').innerText = `Made with infinite love by ${senderName}`;
+        }
+
+        function customizeNames() {
+            const newBabe = prompt("Enter your partner's name or nickname:", babeName);
+            if (newBabe) babeName = newBabe;
+            
+            const newSender = prompt("Enter your name:", senderName);
+            if (newSender) senderName = newSender;
+
+            updateDisplays();
+        }
+
+        // Floating Hearts Background Generator
+        function createFloatingParticles() {
+            const container = document.getElementById('particle-container');
+            const symbols = ['❤️', '💖', '🌸', '🧸', '✨', '🩹', '💗'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.fontSize = `${16 + Math.random() * 20}px`;
+                particle.style.animationDuration = `${6 + Math.random() * 8}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(particle);
+            }
+        }
+
+        // Hug Action
+        function sendHug() {
+            hugCount++;
+            document.getElementById('hug-counter').innerText = `${hugCount} Hug${hugCount === 1 ? '' : 's'}`;
+            
+            const mainEmoji = document.getElementById('main-emoji');
+            mainEmoji.innerText = '🫂';
+            setTimeout(() => { mainEmoji.innerText = '🧸'; }, 1000);
+
+            const messages = [
+                `SQUEEEEZE! Big warm hug delivered straight to ${babeName}! 🤗`,
+                `Wrapping you up in a big cozy blanket hug! 🛋️`,
+                `Hold on tight! Another dosage of love sent your way! 💕`,
+                `Extra soft squeeze to make all the aches disappear! ✨`
+            ];
+            
+            showModal('🤗 Giant Hug Sent!', messages[hugCount % messages.length], '🧸');
+        }
+
+        // Soup Action
+        function openSoupModal() {
+            showModal(
+                `Warm Soup for ${babeName}! 🥣`,
+                `Fresh bowl of piping hot chicken/veggie soup prepared with 100% affection!\n\n• Temp: Perfectly cozy\n• Side Dish: Unlimited forehead kisses\n\nBlow on it gently before eating! 🥄`,
+                '🥣'
+            );
+        }
+
+        // Prescription Action
+        function openPrescriptionModal() {
+            showModal(
+                `Doctor's Orders 📋`,
+                `Official Recovery Plan for ${babeName}:\n\n1. Take 1 long nap (Mandatory) 💤\n2. Drink a big glass of water 💧\n3. Cuddle up with a soft pillow 🛌\n4. Zero stress allowed today! 🚫\n\nRefills guaranteed 24/7 by ${senderName}!`,
+                '💊'
+            );
+        }
+
+        // Flower Action
+        function pickFlower() {
+            const flowers = [
+                { name: '🌻 Sunflower', desc: 'To bring bright sunshine and cheerful warmth to your day!' },
+                { name: '🌷 Pink Tulip', desc: 'A reminder of how soft, sweet, and loved you are.' },
+                { name: '🌸 Cherry Blossom', desc: 'Gentle, beautiful, and strong—just like you!' },
+                { name: '🌹 Cozy Rose', desc: 'To remind you how deeply I care about you every single minute.' }
+            ];
+            const picked = flowers[Math.floor(Math.random() * flowers.length)];
+            showModal(picked.name, `${picked.desc}\n\nVirtual bouquet placed right next to your bed! 💐`, '🌸');
+        }
+
+        // Custom Modal Utility
+        function showModal(title, text, emoji) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('modal-emoji').innerText = emoji;
+            
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.add('hidden');
+        }
+
+        // Web Audio Lullaby Synthesizer (No external audio files needed!)
+        let audioCtx = null;
+        let melodyInterval = null;
+
+        function toggleMusic() {
+            const btnText = document.getElementById('music-text');
+            
+            if (isAudioPlaying) {
+                clearInterval(melodyInterval);
+                isAudioPlaying = false;
+                btnText.innerText = "Lullaby Off";
+                return;
+            }
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            isAudioPlaying = true;
+            btnText.innerText = "Lullaby On 🎵";
+            
+            const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88]; // C major scale frequencies
+            
+            melodyInterval = setInterval(() => {
+                if (!isAudioPlaying) return;
+                const freq = notes[Math.floor(Math.random() * notes.length)];
+                playTone(freq, 1.2);
+            }, 800);
+        }
+
+        function playTone(freq, duration) {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio not allowed yet");
+            }
+        }
+    </script>
+</body>
+</html>
+
+
